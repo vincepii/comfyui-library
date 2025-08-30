@@ -1,0 +1,14 @@
+[project]
+name = "comfy_client"
+version = "0.1.0"
+py-modules = ["comfy_client"]
+
+# Add this section
+dependencies = [
+    "websocket-client",
+    "Pillow"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
