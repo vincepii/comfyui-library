@@ -24,19 +24,26 @@ OUTPUT_FILE_PATH = "generated_image.png"
 # --- Create a client instance ---
 client = ComfyUIClient(COMFYUI_SERVER_ADDRESS)
 
-# --- Call the generation function with your desired parameters ---
-success = client.generate_image(
-    positive_prompt="A stunningly beautiful cinematic shot of a futuristic neon-lit city street at night, wet pavement reflecting the glowing signs, flying vehicles in the sky, high detail, 8k",
+# --- Call the generation function to get a list of image objects ---
+generated_images = client.generate_images(
+    positive_prompt="A stunningly beautiful cinematic shot of a futuristic neon-lit city street at night, wet pavement reflecting the glowing signs, flying vehicles in the sky, high detail, 4k",
     negative_prompt="(worst quality, low quality, normal quality), blurry, ugly, disfigured, watermark, text, signature, plain background",
     model_name=MODEL_NAME,
-    output_path=OUTPUT_FILE_PATH,
-    width=1024,
-    height=1024,
     steps=25,
     cfg=4.5,
-    seed=42 # Use a fixed seed for reproducibility
 )
 
-if not success:
-    print("Image generation failed.")
+# --- Process the returned images ---
+if generated_images:
+    print(f"✅ Generation successful! Received {len(generated_images)} image(s).")
+
+    # Save the first image to a file
+    try:
+        generated_images[0].save(OUTPUT_FILE_PATH)
+        print(f"Image saved to {OUTPUT_FILE_PATH}")
+    except IOError as e:
+        print(f"Error saving image: {e}")
+
+else:
+    print("❌ Image generation failed. No images were returned.")
 ```
